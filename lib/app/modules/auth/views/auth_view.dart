@@ -89,9 +89,8 @@ class AuthView extends GetView<AuthController> {
 
                   StatefulBuilder(
                     builder: (context, setState) {
-                      bool obscureText = true;
                       return TextField(
-                        obscureText: obscureText,
+                        obscureText: authController.obscureText.value,
                         controller: authController.passwordController,
                         decoration: InputDecoration(
                           hintText: "********",
@@ -109,14 +108,17 @@ class AuthView extends GetView<AuthController> {
                           ),
                           suffixIcon: IconButton(
                             icon: Icon(
-                              obscureText
+                              authController.obscureText.value
                                   ? Icons.visibility_off
                                   : Icons.visibility,
                               color: Colors.black,
                             ),
                             onPressed: () {
                               setState(() {
-                                obscureText = !obscureText;
+                                authController.obscureText.value =
+                                    !authController
+                                        .obscureText
+                                        .value; // Toggle nilai
                               });
                             },
                           ),

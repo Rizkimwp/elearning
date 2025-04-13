@@ -33,7 +33,7 @@ class HomeView extends GetView<HomeController> {
                           () => Text(
                             'Hai, ${controller.username.value}',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins',
                               color: Colors.white,
@@ -60,7 +60,7 @@ class HomeView extends GetView<HomeController> {
             Container(
               margin: EdgeInsets.only(top: 270),
               padding: EdgeInsets.only(top: 60),
-              height: MediaQuery.of(context).size.height * 0.60,
+              height: MediaQuery.of(context).size.height * 0.80,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -96,7 +96,7 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 120, horizontal: 20),
+              margin: EdgeInsets.symmetric(vertical: 120, horizontal: 17),
               height: 200,
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(

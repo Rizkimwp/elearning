@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class AuthController extends GetxController {
+  var obscureText = true.obs;
   final namaController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -107,6 +108,7 @@ class AuthController extends GetxController {
   @override
   void onClose() {
     // Pastikan untuk membersihkan controller ketika tidak digunakan
+    passwordController.dispose();
     namaController.dispose();
     emailController.dispose();
     passwordController.dispose();
