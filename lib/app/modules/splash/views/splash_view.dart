@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lottie/lottie.dart';
 import '../controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
   SplashView({super.key});
+  
    final SplashController controller = Get.put(SplashController()); // Pakai Get.put
   @override
   Widget build(BuildContext context) {
-  
+   
     return Scaffold(
       backgroundColor: Colors.blue,
       body: Center(

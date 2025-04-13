@@ -1,8 +1,5 @@
 import 'package:elearning/app/components/animated_gradient.dart';
 import 'package:elearning/app/modules/auth/views/auth_view.dart';
-import 'package:elearning/app/modules/auth/views/register_view.dart';
-import 'package:elearning/app/modules/home/views/home_view.dart';
-import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/modules_intro_controller.dart';

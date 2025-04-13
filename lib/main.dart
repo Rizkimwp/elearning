@@ -3,6 +3,7 @@ import 'package:elearning/app/modules/splash/views/splash_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -13,7 +14,7 @@ void main() {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-      home: const BottomNavView(), // Added const for better performance if BottomNavView is immutable
+      // Added const for better performance if BottomNavView is immutable
     ),
   );
 }

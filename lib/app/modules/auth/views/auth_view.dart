@@ -1,5 +1,4 @@
 import 'package:elearning/app/modules/auth/views/register_view.dart';
-import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +7,8 @@ import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
 
 class AuthView extends GetView<AuthController> {
-  const AuthView({super.key});
-
+  AuthView({super.key});
+  final authController = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +58,7 @@ class AuthView extends GetView<AuthController> {
                   ),
                   SizedBox(height: 5),
                   TextField(
+                    controller: authController.emailController,
                     decoration: InputDecoration(
                       hintText: "your_mail@gmail.com",
                       labelStyle: TextStyle(color: Colors.black),
@@ -92,6 +92,7 @@ class AuthView extends GetView<AuthController> {
                       bool obscureText = true;
                       return TextField(
                         obscureText: obscureText,
+                        controller: authController.passwordController,
                         decoration: InputDecoration(
                           hintText: "********",
                           labelStyle: TextStyle(color: Colors.black),
@@ -123,6 +124,18 @@ class AuthView extends GetView<AuthController> {
                       );
                     },
                   ),
+                  // Menampilkan pesan kesalahan di bawah form
+                  Obx(
+                    () =>
+                        authController.errorMessage.value.isNotEmpty
+                            ? Text(
+                              authController.errorMessage.value,
+                              style: TextStyle(color: Colors.red),
+                            )
+                            : Container(),
+                  ),
+
+                  SizedBox(height: 20),
 
                   SizedBox(height: 15),
                   Align(
@@ -131,7 +144,8 @@ class AuthView extends GetView<AuthController> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.offNamed('/bottom-nav');
+                          authController
+                              .login(); // Panggil fungsi login yang sudah ada
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF3D5CFF),
@@ -140,10 +154,22 @@ class AuthView extends GetView<AuthController> {
                           ),
                           padding: EdgeInsets.symmetric(vertical: 15),
                         ),
-                        child: Text(
-                          'Log in',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
+                        child: Obx(() {
+                          // Periksa status loading, jika loading tampilkan CircularProgressIndicator
+                          return authController.isLoading.value
+                              ? CircularProgressIndicator(
+                                color:
+                                    Colors
+                                        .white, // Warna loading sesuai dengan tombol
+                              )
+                              : Text(
+                                'Log in',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              );
+                        }),
                       ),
                     ),
                   ),
@@ -168,10 +194,11 @@ class AuthView extends GetView<AuthController> {
                             recognizer:
                                 TapGestureRecognizer()
                                   ..onTap = () {
+                                    Get.put(AuthController());
                                     Get.to(
-                                    RegisterView(), 
-                                    transition: Transition.fadeIn,
-                                    duration: Duration(milliseconds: 500)
+                                      RegisterView(),
+                                      transition: Transition.fadeIn,
+                                      duration: Duration(milliseconds: 500),
                                     );
                                   },
                           ),

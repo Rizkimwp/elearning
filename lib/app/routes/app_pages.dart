@@ -49,14 +49,10 @@ class AppPages {
       page: () => const BottomNavView(),
       binding: BottomNavBinding(),
     ),
-    GetPage(
-      name: _Paths.AUTH,
-      page: () => const AuthView(),
-      binding: AuthBinding(),
-    ),
+    GetPage(name: _Paths.AUTH, page: () => AuthView(), binding: AuthBinding()),
     GetPage(
       name: _Paths.REGISTER,
-      page: () => const RegisterView(),
+      page: () => RegisterView(),
       binding: AuthBinding(),
     ),
     GetPage(
@@ -71,7 +67,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ACCOUNT,
-      page: () => const AccountView(),
+      page: () => AccountView(),
       binding: AccountBinding(),
     ),
   ];

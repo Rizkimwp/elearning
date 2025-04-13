@@ -1,14 +1,13 @@
 import 'package:elearning/app/modules/auth/controllers/auth_controller.dart';
 import 'package:elearning/app/modules/auth/views/auth_view.dart';
-import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
 class RegisterView extends GetView<AuthController> {
-  const RegisterView({super.key});
-
+  RegisterView({super.key});
+  final authController = Get.put(AuthController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +15,7 @@ class RegisterView extends GetView<AuthController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Top Section with "Log In" text
+            // Top Section
             Container(
               height: 200,
               width: double.infinity,
@@ -49,7 +48,7 @@ class RegisterView extends GetView<AuthController> {
               ),
             ),
 
-            // Bottom Section with form
+            // Form Section
             Container(
               padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
               height: MediaQuery.of(context).size.height - 195,
@@ -57,96 +56,50 @@ class RegisterView extends GetView<AuthController> {
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Input Email
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Masukan Email",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildLabel("Nama Lengkap"),
+                    buildInput(authController.namaController, "John Doe"),
+                    buildLabel("Email"),
+                    buildInput(
+                      controller.emailController,
+                      "your_mail@gmail.com",
                     ),
-                  ),
-                  SizedBox(height: 5),
-                  TextField(
-                    decoration: InputDecoration(
-                      hintText: "your_mail@gmail.com",
-                      labelStyle: TextStyle(color: Colors.black),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.black, width: 2),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
 
-                  // Input Password
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Masukan Password",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-
-                  StatefulBuilder(
-                    builder: (context, setState) {
-                      bool obscureText = true;
-                      return TextField(
-                        obscureText: obscureText,
-                        decoration: InputDecoration(
-                          hintText: "********",
-                          labelStyle: TextStyle(color: Colors.black),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 2,
+                    buildLabel("Password"),
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        bool obscureText = true;
+                        return TextField(
+                          controller: authController.passwordController,
+                          obscureText: obscureText,
+                          decoration: InputDecoration(
+                            hintText: "********",
+                            enabledBorder: borderStyle(),
+                            focusedBorder: borderStyle(focused: true),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() => obscureText = !obscureText);
+                              },
                             ),
                           ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                obscureText = !obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    ),
 
-                  SizedBox(height: 15),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
+                    SizedBox(height: 15),
+                    SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Get.offNamed('/bottom-nav');
-                        },
+                        onPressed: () => authController.submitForm(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF3D5CFF),
                           shape: RoundedRectangleBorder(
@@ -160,40 +113,39 @@ class RegisterView extends GetView<AuthController> {
                         ),
                       ),
                     ),
-                  ),
 
-                  SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text.rich(
-                      textAlign: TextAlign.center,
-                      TextSpan(
-                        text: "Sudah punya akun ?  ",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text: "Log in",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.blue,
-                              decoration: TextDecoration.none,
+                    SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text.rich(
+                        TextSpan(
+                          text: "Sudah punya akun ?  ",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: "Log in",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.blue,
+                                decoration: TextDecoration.none,
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.to(
+                                        AuthView(),
+                                        transition: Transition.fadeIn,
+                                        duration: Duration(milliseconds: 600),
+                                      );
+                                    },
                             ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Get.to(
-                                      AuthView(),
-                                      transition: Transition.fadeIn,
-                                      duration: Duration(milliseconds: 600),
-                                    );
-                                  },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -202,3 +154,27 @@ class RegisterView extends GetView<AuthController> {
     );
   }
 }
+
+Widget buildLabel(String text) => Padding(
+  padding: const EdgeInsets.only(top: 15, bottom: 5),
+  child: Text(
+    text,
+    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  ),
+);
+
+Widget buildInput(TextEditingController controller, String hint) {
+  return TextField(
+    controller: controller,
+    decoration: InputDecoration(
+      hintText: hint,
+      enabledBorder: borderStyle(),
+      focusedBorder: borderStyle(focused: true),
+    ),
+  );
+}
+
+OutlineInputBorder borderStyle({bool focused = false}) => OutlineInputBorder(
+  borderRadius: BorderRadius.circular(15),
+  borderSide: BorderSide(color: Colors.black, width: focused ? 2 : 1),
+);

@@ -34,14 +34,14 @@ class BottomNavView extends GetView<BottomNavController> {
             ),
             NavItem(
               icon: Icons.book,
-              label: 'Courses',
+              label: 'Modul',
               index: 1,
               selectedIndex: controller.selectedIndex,
               onTap: (index) => controller.changePage(index),
             ),
             NavItem(
               icon: Icons.message,
-              label: 'Messages',
+              label: 'Diskusi',
               index: 2,
               selectedIndex: controller.selectedIndex,
               onTap: (index) => controller.changePage(index),

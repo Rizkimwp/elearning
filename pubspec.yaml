@@ -40,7 +40,20 @@ dependencies:
   # cloud_firestore: ^4.9.0
   # firebase_storage: ^11.2.0 # Opsional untuk notifikasi
   lottie: ^2.7.0 
-
+  http: ^0.13.5   
+  get_storage: ^2.1.1
+  jwt_decoder: ^2.0.1
+  # flutter_local_notifications: ^15.0.0
+  # firebase_messaging: ^14.5.0
+  # flutter_localizations:
+  #   sdk: flutter
+  # flutter_native_splash: ^2.2.12
+  # shared_preferences: ^3.1.0
+  # image_picker: ^0.8.7+4
+  # dio: ^5.8.0
+  # flutter_secure_storage: ^6.1.0
+  # path_provider: ^2.11.0
+  # permission_handler: ^11.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
