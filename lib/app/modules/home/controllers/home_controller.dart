@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:elearning/app/data/program_studi/program_studi.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,11 +13,11 @@ class HomeController extends GetxController {
   var username = ''.obs;
   @override
   void onInit() {
-    fetchProgramStudi();
+    decodeToken();
     super.onInit();
   }
 
-  void fetchProgramStudi() {
+  void decodeToken() {
     final box = GetStorage();
     final token = box.read('jwt_token');
     Map<String, dynamic> decoded = JwtDecoder.decode(token);

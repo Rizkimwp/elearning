@@ -10,3 +10,13 @@ class HomeBinding extends Bindings {
     );
   }
 }
+
+
+class HomeGuruBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<HomeController>(
+      () => HomeController(),
+    );
+  }
+}

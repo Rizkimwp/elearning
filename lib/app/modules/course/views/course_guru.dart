@@ -1,5 +1,6 @@
 import 'package:elearning/app/components/course_card.dart';
 import 'package:elearning/app/components/custom_appbar.dart';
+import 'package:elearning/app/modules/course/views/add_course.dart';
 import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -7,9 +8,10 @@ import 'package:get/get.dart';
 
 import '../controllers/course_controller.dart';
 
-class CourseView extends GetView<CourseController> {
+class CourseGuruView extends GetView<CourseController> {
   static final courseController = Get.put<CourseController>(CourseController());
-  const CourseView({super.key});
+  const CourseGuruView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,10 +79,9 @@ class CourseView extends GetView<CourseController> {
                         title: meeting.title, // Menampilkan title dari meeting
                         author:
                             meeting
-                                .description, // Menampilkan description sebagai author (atau ganti sesuai data yang diinginkan)
+                                .description, // Menampilkan description sebagai author
                         modules:
-                            meeting
-                                .order, // Menampilkan order sebagai modules (atau ganti sesuai data yang diinginkan)
+                            meeting.order, // Menampilkan order sebagai modules
                       ),
                     );
                   },
@@ -89,6 +90,23 @@ class CourseView extends GetView<CourseController> {
             ),
           ],
         ),
+      ),
+      // Menambahkan tombol di pojok kanan bawah
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true, // Agar ukurannya bisa diatur
+            builder: (context) {
+              return Container(
+                height: MediaQuery.of(context).size.height / 1.8, // Setengah layar
+                child: AddCourseForm(),
+              );
+            },
+          );
+        },
+        child: Icon(Icons.add), // Icon untuk tombol
+        backgroundColor: Colors.blue, // Warna background tombol
       ),
     );
   }

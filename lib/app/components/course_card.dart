@@ -93,16 +93,4 @@ class CourseCard extends StatelessWidget {
   }
 }
 
-final List<Map<String, dynamic>> courses = [
-  {"title": "Product Design", "author": "Robertson Connie", "modules": 1},
-  {"title": "Quality Assurance", "author": "Nguyen Shane", "modules": 6},
-  {"title": "Visual Design", "author": "Bert Pullman", "modules": 2},
-  {"title": "Data Analyst", "author": "Bert Pullman", "modules": 4},
-  {"title": "Data Science", "author": "Bert Pullman", "modules": 4},
-  {"title": "Mobile Development", "author": "Alice Johnson", "modules": 5},
-  {"title": "Web Development", "author": "John Doe", "modules": 3},
-  {"title": "Cyber Security", "author": "Jane Smith", "modules": 7},
-  {"title": "Machine Learning", "author": "Emily Davis", "modules": 8},
-  {"title": "Cloud Computing", "author": "Michael Brown", "modules": 6},
-  {"title": "Cloud Braize", "author": "Michael Brown", "modules": 6},
-];
+

@@ -19,6 +19,8 @@ class NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Obx(
       () => Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,7 +35,10 @@ class NavItem extends StatelessWidget {
               ),
             ),
             child: IconButton(
-              icon: Icon(icon),
+              icon: Icon(
+                icon,
+                size: screenWidth * 0.06,
+              ), // Adjust icon size based on screen width
               color: selectedIndex.value == index ? Colors.blue : Colors.grey,
               onPressed: () => onTap(index),
             ),
@@ -42,7 +47,8 @@ class NavItem extends StatelessWidget {
             label,
             style: TextStyle(
               color: selectedIndex.value == index ? Colors.blue : Colors.grey,
-              fontSize: 12,
+              fontSize:
+                  screenWidth * 0.03, // Adjust font size based on screen width
             ),
           ),
         ],

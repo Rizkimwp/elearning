@@ -1,5 +1,6 @@
 import 'package:elearning/app/components/custom_appbar.dart';
 import 'package:elearning/app/modules/bottom_nav/controllers/bottom_nav_controller.dart';
+import 'package:elearning/app/modules/course/views/course_detail.dart';
 import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,10 @@ class HomeView extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height * 0.05,
+                      horizontal: MediaQuery.of(context).size.width * 0.08,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -33,7 +37,8 @@ class HomeView extends GetView<HomeController> {
                           () => Text(
                             'Hai, ${controller.username.value}',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins',
                               color: Colors.white,
@@ -58,8 +63,12 @@ class HomeView extends GetView<HomeController> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 270),
-              padding: EdgeInsets.only(top: 60),
+              margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.30,
+              ),
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.08,
+              ),
               height: MediaQuery.of(context).size.height * 0.80,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -69,9 +78,11 @@ class HomeView extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   progressSection(),
-                  SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.05,
+                    ),
                     child: Text(
                       'Modul Terbaru',
                       style: TextStyle(
@@ -82,23 +93,38 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      children: List.generate(4, (index) => courseCard()),
+                      children: List.generate(
+                        4,
+                        (index) => Padding(
+                          padding: EdgeInsets.only(
+                            left:
+                                index == 0
+                                    ? MediaQuery.of(context).size.width * 0.05
+                                    : 0,
+                            right: MediaQuery.of(context).size.width * 0.03,
+                          ),
+                          child: courseCard(),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   assignmentSection(),
-                  SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 120, horizontal: 17),
-              height: 200,
-              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.15,
+                horizontal: MediaQuery.of(context).size.width * 0.05,
+              ),
+              height: MediaQuery.of(context).size.height * 0.20,
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -120,7 +146,7 @@ class HomeView extends GetView<HomeController> {
                       Text(
                         '📘 Modul Sedang Dipelajari',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: MediaQuery.of(context).size.width * 0.04,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[700],
                         ),
@@ -128,6 +154,7 @@ class HomeView extends GetView<HomeController> {
                       TextButton(
                         onPressed: () {
                           // Arahkan ke halaman semua materi
+                          bottomController.changePage(1);
                         },
                         child: Text(
                           'Lihat Semua',
@@ -136,49 +163,72 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   Container(
                     decoration: BoxDecoration(
                       color: Color(0xFFF2F6FF),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.computer,
-                          size: 36,
-                          color: Color(0xFF3D5CFF),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'Pengantar Algoritma',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Durasi: 25 menit · 3 Video · 1 Quiz',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
+                    padding: EdgeInsets.all(
+                      MediaQuery.of(context).size.width * 0.04,
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        // Tambahkan aksi yang diinginkan di sini
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CourseDetailPage(),
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: Colors.grey,
-                        ),
-                      ],
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.computer,
+                            size: MediaQuery.of(context).size.width * 0.09,
+                            color: Color(0xFF3D5CFF),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.03,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Pengantar Algoritma',
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                        0.045,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height *
+                                      0.005,
+                                ),
+                                Text(
+                                  'Durasi: 25 menit · 3 Video · 1 Quiz',
+                                  style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width *
+                                        0.03,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: MediaQuery.of(context).size.width * 0.04,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

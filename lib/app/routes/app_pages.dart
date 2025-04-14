@@ -1,3 +1,7 @@
+import 'package:elearning/app/modules/account/views/account_guru.dart';
+import 'package:elearning/app/modules/course/views/course_guru.dart';
+import 'package:elearning/app/modules/home/views/home_view_guru.dart';
+import 'package:elearning/app/modules/message/views/message_guru.dart';
 import 'package:get/get.dart';
 
 import '../modules/account/bindings/account_binding.dart';
@@ -33,6 +37,11 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage(
+      name: _Paths.HOME_GURU,
+      page: () => const HomeGuruView(),
+      binding: HomeGuruBinding(),
+    ),
+    GetPage(
       name: _Paths.INTRO,
       page: () => const ModulesIntroView(),
       binding: ModulesIntroBinding(),
@@ -61,13 +70,28 @@ class AppPages {
       binding: CourseBinding(),
     ),
     GetPage(
+      name: _Paths.COURSE_GURU,
+      page: () => const CourseGuruView(),
+      binding: CourseBinding(),
+    ),
+    GetPage(
       name: _Paths.MESSAGE,
       page: () => const MessageView(),
       binding: MessageBinding(),
     ),
     GetPage(
+      name: _Paths.MESSAGE_GURU,
+      page: () => const MessageGuruView(),
+      binding: MessageBinding(),
+    ),
+    GetPage(
       name: _Paths.ACCOUNT,
       page: () => AccountView(),
+      binding: AccountBinding(),
+    ),
+    GetPage(
+      name: _Paths.ACCOUNT,
+      page: () => AccountGuruView(),
       binding: AccountBinding(),
     ),
   ];

@@ -15,7 +15,7 @@ class BottomNavView extends GetView<BottomNavController> {
       body: Obx(
         () => IndexedStack(
           index: controller.selectedIndex.value,
-          children: controller.pageRoutes,
+          children: controller.activePages,
         ),
       ),
       bottomNavigationBar: BottomAppBar(

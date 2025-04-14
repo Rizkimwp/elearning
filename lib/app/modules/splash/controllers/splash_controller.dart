@@ -5,11 +5,11 @@ import 'package:get_storage/get_storage.dart';
 
 class SplashController extends GetxController {
   void startSplash() {
-    print("Splash screen dimulai...");
+  
     Future.delayed(Duration(seconds: 6), () {
       final box = GetStorage();
       final token = box.read('jwt_token');
-      print('Token $token');
+     
       if (token != null) {
         // Jika token ada, arahkan ke halaman utama
         print("Navigasi ke Home...");
