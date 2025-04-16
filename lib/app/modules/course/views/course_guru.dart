@@ -1,6 +1,7 @@
 import 'package:elearning/app/components/course_card.dart';
 import 'package:elearning/app/components/custom_appbar.dart';
 import 'package:elearning/app/modules/course/views/add_course.dart';
+import 'package:elearning/app/modules/course/views/course_detail_guru.dart';
 import 'package:elearning/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -54,37 +55,100 @@ class CourseGuruView extends GetView<CourseController> {
             Container(child: FilterButtons()),
             Expanded(
               child: Obx(() {
-                // Menunggu data atau menampilkan loading indicator
-                if (courseController.isLoading.isTrue) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (courseController.meeting.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "Belum ada pertemuan",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  );
-                }
-
-                return ListView.builder(
-                  itemCount: courseController.meeting.length,
-                  itemBuilder: (context, index) {
-                    // Ambil data post dari list
-                    var meeting = courseController.meeting[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: CourseCard(
-                        title: meeting.title, // Menampilkan title dari meeting
-                        author:
-                            meeting
-                                .description, // Menampilkan description sebagai author
-                        modules:
-                            meeting.order, // Menampilkan order sebagai modules
-                      ),
-                    );
-                  },
+                return RefreshIndicator(
+                  onRefresh: courseController.refreshData,
+                  child:
+                      courseController.meeting.isEmpty
+                          ? ListView(
+                            // Supaya tetap bisa discroll walau kosong
+                            children: const [
+                              SizedBox(
+                                height: 400, // kasih tinggi biar bisa digeser
+                                child: Center(
+                                  child: Text(
+                                    "Belum ada pertemuan",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                          : ListView.builder(
+                            itemCount: courseController.meeting.length,
+                            itemBuilder: (context, index) {
+                              final meeting = courseController.meeting[index];
+                              return Dismissible(
+                                key: Key(meeting.id.toString()),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  color: Colors.red,
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                confirmDismiss: (direction) async {
+                                  return await showDialog<bool>(
+                                    context: context,
+                                    builder:
+                                        (context) => AlertDialog(
+                                          title: const Text("Konfirmasi"),
+                                          content: const Text(
+                                            "Yakin ingin menghapus meeting ini?",
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.of(
+                                                    context,
+                                                  ).pop(false),
+                                              child: const Text("Batal"),
+                                            ),
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.of(
+                                                    context,
+                                                  ).pop(true),
+                                              child: const Text("Hapus"),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+                                },
+                                onDismissed: (direction) {
+                                  courseController.deletePost(meeting.id);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('${meeting.title} dihapus'),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: CourseCard(
+                                    title: meeting.title,
+                                    author: meeting.description,
+                                    modules: meeting.order,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => CourseDetailGuruPage(
+                                                meeting: meeting,
+                                              ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                 );
               }),
             ),
@@ -94,15 +158,11 @@ class CourseGuruView extends GetView<CourseController> {
       // Menambahkan tombol di pojok kanan bawah
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-        showModalBottomSheet(
-            context: context,
-            isScrollControlled: true, // Agar ukurannya bisa diatur
-            builder: (context) {
-              return Container(
-                height: MediaQuery.of(context).size.height / 1.8, // Setengah layar
-                child: AddCourseForm(),
-              );
-            },
+          Get.to(
+            () => Scaffold(
+              appBar: AppBar(title: Text("Add Course")),
+              body: AddCourseForm(),
+            ),
           );
         },
         child: Icon(Icons.add), // Icon untuk tombol

@@ -80,7 +80,9 @@ class CourseView extends GetView<CourseController> {
                                 .description, // Menampilkan description sebagai author (atau ganti sesuai data yang diinginkan)
                         modules:
                             meeting
-                                .order, // Menampilkan order sebagai modules (atau ganti sesuai data yang diinginkan)
+                                .order,
+                        onTap:
+                            () {}, // Menampilkan order sebagai modules (atau ganti sesuai data yang diinginkan)
                       ),
                     );
                   },

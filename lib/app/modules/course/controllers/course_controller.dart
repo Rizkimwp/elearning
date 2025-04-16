@@ -1,13 +1,21 @@
 import 'dart:convert';
 
-import 'package:elearning/app/components/hook/global_config.dart';
+import 'package:elearning/utils/global_config.dart';
 import 'package:elearning/app/data/meeting/meeting.dart';
+import 'package:elearning/utils/auth_helper.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class CourseController extends GetxController {
   var meeting = <Meeting>[].obs;
   var isLoading = false.obs;
+
+  Future<void> refreshData() async {
+    // Simulasi proses data baru (misalnya dari API)
+    await Future.delayed(Duration(seconds: 2));
+
+    fetchPosts();
+  }
 
   // Fetch data from API
   Future<void> fetchPosts() async {
@@ -39,6 +47,7 @@ class CourseController extends GetxController {
           'title': title,
           'description': description,
           'order': order,
+          'create_by': AuthHelper.userId,
         }),
       );
 
@@ -90,7 +99,9 @@ class CourseController extends GetxController {
     try {
       final response = await http.delete(GlobalConfig.deleteMeetingByIdUrl(id));
 
-      if (response.statusCode == 200) {
+      final responseJson = jsonDecode(response.body);
+
+      if (responseJson['success'] == true) {
         fetchPosts(); // Refresh data after deleting
         Get.snackbar('Success', 'Post deleted successfully');
       } else {
@@ -110,7 +121,6 @@ class CourseController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-  
   }
 
   @override

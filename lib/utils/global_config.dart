@@ -1,6 +1,6 @@
 class GlobalConfig {
-  static const String baseUrl = 'https://freexyzdev.site';
-
+  // static const String baseUrl = 'https://freexyzdev.site';
+ static const String baseUrl = 'http://10.0.2.2:3000';
   // URL untuk login
   static Uri get loginUrl => Uri.parse('$baseUrl/auth/login');
 
@@ -14,4 +14,7 @@ class GlobalConfig {
   static Uri putMeetingByIdUrl(String id) => Uri.parse('$baseUrl/meeting/$id');
   static Uri deleteMeetingByIdUrl(String id) =>
       Uri.parse('$baseUrl/meeting/$id');
+
+  static Uri get postQuizUrl => Uri.parse('$baseUrl/quiz');
+  static Uri get getQuizUrl => Uri.parse('$baseUrl/quiz');
 }

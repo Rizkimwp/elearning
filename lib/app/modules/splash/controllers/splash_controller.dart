@@ -1,3 +1,4 @@
+import 'package:elearning/utils/auth_helper.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 
@@ -7,10 +8,10 @@ class SplashController extends GetxController {
   void startSplash() {
   
     Future.delayed(Duration(seconds: 6), () {
-      final box = GetStorage();
-      final token = box.read('jwt_token');
+      
+      
      
-      if (token != null) {
+      if (AuthHelper.isLoggedIn) {
         // Jika token ada, arahkan ke halaman utama
         print("Navigasi ke Home...");
         Get.offNamed('/bottom-nav');
@@ -24,7 +25,6 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    GetStorage.init();
     startSplash();
   }
 }

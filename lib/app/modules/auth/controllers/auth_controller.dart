@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:elearning/app/components/hook/global_config.dart';
+import 'package:elearning/utils/global_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';

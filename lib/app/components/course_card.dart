@@ -4,21 +4,20 @@ class CourseCard extends StatelessWidget {
   final String title;
   final String author;
   final int modules;
+  final VoidCallback onTap;
 
   const CourseCard({
     required this.title,
     required this.author,
     required this.modules,
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Navigasi ke halaman detail
-        print('Navigasi ke detail course');
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         padding: const EdgeInsets.all(12),
@@ -92,5 +91,3 @@ class CourseCard extends StatelessWidget {
     );
   }
 }
-
-

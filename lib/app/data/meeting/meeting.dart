@@ -3,9 +3,8 @@ class Meeting {
   final String title;
   final String description;
   final int order;
-  final String createdAt;
-  final String updatedAt;
-  final String? createdBy;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   Meeting({
     required this.id,
@@ -14,7 +13,6 @@ class Meeting {
     required this.order,
     required this.createdAt,
     required this.updatedAt,
-    this.createdBy,
   });
 
   factory Meeting.fromJson(Map<String, dynamic> json) {
@@ -23,9 +21,17 @@ class Meeting {
       title: json['title'],
       description: json['description'],
       order: json['order'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      createdBy: json['createdBy'],
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'description': description,
+        'order': order,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+      };
 }
