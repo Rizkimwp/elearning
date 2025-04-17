@@ -27,7 +27,7 @@ class HomeGuruView extends GetView<HomeController> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height * 0.05,
+                      vertical: MediaQuery.of(context).size.height * 0.06,
                       horizontal: MediaQuery.of(context).size.width * 0.08,
                     ),
                     child: Row(
@@ -64,12 +64,12 @@ class HomeGuruView extends GetView<HomeController> {
             ),
             Container(
               margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.30,
+                top: MediaQuery.of(context).size.height * 0.27,
               ),
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.08,
               ),
-              height: MediaQuery.of(context).size.height * 0.80,
+              height: MediaQuery.of(context).size.height * 0.85,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -119,18 +119,18 @@ class HomeGuruView extends GetView<HomeController> {
                       ),
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                   assignmentSection(),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                
                 ],
               ),
             ),
             Container(
               margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height * 0.15,
+                vertical: MediaQuery.of(context).size.height * 0.12,
                 horizontal: MediaQuery.of(context).size.width * 0.05,
               ),
-              height: MediaQuery.of(context).size.height * 0.20,
+              height: MediaQuery.of(context).size.height * 0.22,
               padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -258,7 +258,7 @@ Widget courseCard({
     margin: EdgeInsets.symmetric(horizontal: 10),
     padding: EdgeInsets.all(15),
     width: 220,
-    height: 160,
+    height: 150,
     decoration: BoxDecoration(
       color: Color(0xFFEEF3FF),
       borderRadius: BorderRadius.circular(12),
