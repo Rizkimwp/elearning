@@ -1,11 +1,14 @@
 import 'package:elearning/app/data/meeting/meeting.dart';
 import 'package:elearning/app/data/module/controller/module_controller.dart';
 import 'package:elearning/app/data/quiz/controller/quiz_controller.dart';
+import 'package:elearning/app/data/videomaterial/controller/vidio_controller.dart';
 import 'package:elearning/app/modules/course/views/add_course.dart';
 import 'package:elearning/app/modules/course/views/add_modul.dart';
 import 'package:elearning/app/modules/course/views/add_quiz.dart';
+import 'package:elearning/app/modules/course/views/add_vidio.dart';
 import 'package:elearning/app/modules/course/views/module_detail_guru.dart';
 import 'package:elearning/app/modules/course/views/quiz_detail_guru.dart';
+import 'package:elearning/app/modules/course/views/vidio_detail_guru.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +20,15 @@ class CourseDetailGuruPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final quizController = Get.put<QuizController>(QuizController());
     final modulController = Get.put<ModuleController>(ModuleController());
+    final vidioController = Get.put<VidioController>(VidioController());
+    Future<void> refreshData() async {
+      // Simulasi proses data baru (misalnya dari API)
+      await Future.delayed(Duration(seconds: 2));
+      vidioController.fetchVidio();
+      quizController.getQuizzes();
+      modulController.fetchModule();
+    }
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -123,9 +135,11 @@ class CourseDetailGuruPage extends StatelessWidget {
                       final modul = modulController.modul.firstWhereOrNull(
                         (m) => m.meeting?.id == meeting.id,
                       );
-
+                      final vidio = vidioController.vidio.firstWhereOrNull(
+                        (v) => v.meeting?.id == meeting.id,
+                      );
                       return RefreshIndicator(
-                        onRefresh: modulController.refreshData,
+                        onRefresh: refreshData,
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: screenWidth * 0.06,
@@ -181,13 +195,22 @@ class CourseDetailGuruPage extends StatelessWidget {
                                 // === Modul Pembelajaran ===
                                 buildLessonItem(
                                   "03",
-                                  "Modul Pembelajaran",
-                                  false,
-                                  Icons.add,
-                                  () => _openBottomSheet(
-                                    context,
-                                    AddCourseForm(),
-                                  ),
+                                  "Vidio Pembelajaran",
+                                  vidio != null,
+                                  vidio != null
+                                      ? Icons.remove_red_eye
+                                      : Icons.add,
+                                  () {
+                                    if (vidio != null) {
+                                      Get.to(
+                                        () => VideoDetailScreen(vidio: vidio),
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => VidioFormPage(meeting: meeting),
+                                      );
+                                    }
+                                  },
                                 ),
 
                                 SizedBox(height: screenHeight * 0.02),

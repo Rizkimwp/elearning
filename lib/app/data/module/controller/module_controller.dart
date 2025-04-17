@@ -11,11 +11,6 @@ class ModuleController extends GetxController {
   var modul = <Module>[].obs;
   var isLoading = false.obs;
 
-  Future<void> refreshData() async {
-    // Simulasi proses data baru (misalnya dari API)
-    await Future.delayed(Duration(seconds: 2));
-    fetchModule();
-  }
 
   Future<void> fetchModule() async {
     isLoading.value = true;

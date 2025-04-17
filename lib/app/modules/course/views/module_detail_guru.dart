@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:elearning/app/components/pdf_viewer.dart';
 import 'package:elearning/app/data/module/module.dart';
+import 'package:elearning/utils/global_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path/path.dart';
@@ -20,7 +21,7 @@ class DetailModulPage extends StatelessWidget {
     final String fileUrl = modul.file ?? '';
 
     // Gantilah base URL di sini sesuai server kamu
-    final String fullFileUrl = 'http://192.168.100.130:3000$fileUrl';
+    final String fullFileUrl = GlobalConfig.baseUrl + fileUrl;
 
     return Scaffold(
       appBar: AppBar(title: Text('Detail Modul')),
