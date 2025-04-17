@@ -1,7 +1,10 @@
 import 'package:elearning/app/data/meeting/meeting.dart';
+import 'package:elearning/app/data/module/controller/module_controller.dart';
 import 'package:elearning/app/data/quiz/controller/quiz_controller.dart';
 import 'package:elearning/app/modules/course/views/add_course.dart';
+import 'package:elearning/app/modules/course/views/add_modul.dart';
 import 'package:elearning/app/modules/course/views/add_quiz.dart';
+import 'package:elearning/app/modules/course/views/module_detail_guru.dart';
 import 'package:elearning/app/modules/course/views/quiz_detail_guru.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +16,7 @@ class CourseDetailGuruPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final quizController = Get.put<QuizController>(QuizController());
+    final modulController = Get.put<ModuleController>(ModuleController());
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -112,121 +116,113 @@ class CourseDetailGuruPage extends StatelessWidget {
 
                   // List Modul
                   Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.06,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Obx(() {
-                              final quiz = quizController.quiz.firstWhereOrNull(
-                                (q) => q.meeting?.id == meeting.id,
-                              );
+                    child: Obx(() {
+                      final quiz = quizController.quiz.firstWhereOrNull(
+                        (q) => q.meeting?.id == meeting.id,
+                      );
+                      final modul = modulController.modul.firstWhereOrNull(
+                        (m) => m.meeting?.id == meeting.id,
+                      );
 
-                              return buildLessonItem(
-                                "01",
-                                "Quiz",
-                                true,
-                                quiz != null ? Icons.remove_red_eye : Icons.add,
-                                () {
-                                  if (quiz != null) {
-                                    Get.to(() => QuizDetailPage(quiz: quiz));
-                                  } else {
-                                    Get.to(() => AddQuizForm(meeting: meeting));
-                                  }
-                                },
-                              );
-                            }),
+                      return RefreshIndicator(
+                        onRefresh: modulController.refreshData,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.06,
+                          ),
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                // === Quiz ===
+                                buildLessonItem(
+                                  "01",
+                                  "Quiz",
+                                  quiz != null,
+                                  quiz != null
+                                      ? Icons.remove_red_eye
+                                      : Icons.add,
+                                  () {
+                                    if (quiz != null) {
+                                      Get.to(() => QuizDetailPage(quiz: quiz));
+                                    } else {
+                                      Get.to(
+                                        () => AddQuizForm(meeting: meeting),
+                                      );
+                                    }
+                                  },
+                                ),
 
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem(
-                              "02",
-                              "Pengenalan Materi",
-                              false,
-                              Icons.add,
-                              () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                          1.8,
-                                      child: AddCourseForm(),
-                                    );
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Modul ===
+                                buildLessonItem(
+                                  "02",
+                                  "Modul",
+                                  modul != null,
+                                  modul != null
+                                      ? Icons.remove_red_eye
+                                      : Icons.add,
+                                  () {
+                                    if (modul != null) {
+                                      Get.to(
+                                        () => DetailModulPage(modul: modul),
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => ModulFormPage(meeting: meeting),
+                                      );
+                                    }
                                   },
-                                );
-                              },
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Modul Pembelajaran ===
+                                buildLessonItem(
+                                  "03",
+                                  "Modul Pembelajaran",
+                                  false,
+                                  Icons.add,
+                                  () => _openBottomSheet(
+                                    context,
+                                    AddCourseForm(),
+                                  ),
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Diskusi ===
+                                buildLessonItem(
+                                  "04",
+                                  "Diskusi",
+                                  false,
+                                  Icons.add,
+                                  () => _openBottomSheet(
+                                    context,
+                                    AddCourseForm(),
+                                  ),
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Tugas ===
+                                buildLessonItem(
+                                  "05",
+                                  "Tugas",
+                                  false,
+                                  Icons.add,
+                                  () => _openBottomSheet(
+                                    context,
+                                    AddCourseForm(),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem(
-                              "03",
-                              "Modul Pembelajaran",
-                              false,
-                              Icons.add,
-                              () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                          1.8,
-                                      child: AddCourseForm(),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem(
-                              "04",
-                              "Diskusi",
-                              false,
-                              Icons.add,
-                              () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                          1.8,
-                                      child: AddCourseForm(),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem(
-                              "05",
-                              "Tugas ",
-                              false,
-                              Icons.add,
-                              () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                          1.8,
-                                      child: AddCourseForm(),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ],
               ),
@@ -305,4 +301,17 @@ class CourseDetailGuruPage extends StatelessWidget {
       ],
     );
   }
+}
+
+void _openBottomSheet(BuildContext context, Widget child) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height / 1.8,
+        child: child,
+      );
+    },
+  );
 }

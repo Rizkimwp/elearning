@@ -157,6 +157,7 @@ class CourseGuruView extends GetView<CourseController> {
       ),
       // Menambahkan tombol di pojok kanan bawah
       floatingActionButton: FloatingActionButton(
+        heroTag: "quiz_fab",
         onPressed: () {
           Get.to(
             () => Scaffold(

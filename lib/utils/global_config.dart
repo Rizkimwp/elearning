@@ -17,4 +17,8 @@ class GlobalConfig {
 
   static Uri get postQuizUrl => Uri.parse('$baseUrl/quiz');
   static Uri get getQuizUrl => Uri.parse('$baseUrl/quiz');
+
+
+  static Uri get postModuleUrl => Uri.parse('$baseUrl/module');
+  static Uri get getModuleUrl => Uri.parse('$baseUrl/module');
 }

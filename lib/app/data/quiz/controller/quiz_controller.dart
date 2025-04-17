@@ -55,7 +55,7 @@ class QuizController extends GetxController {
   void onInit() {
     super.onInit();
     getQuizzes();
-    print(quiz);
+
   }
 
   @override
