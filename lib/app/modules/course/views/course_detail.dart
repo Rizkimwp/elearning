@@ -199,10 +199,6 @@ class CourseDetailPage extends StatelessWidget {
                                       Get.to(
                                         () => VideoDetailScreen(vidio: vidio),
                                       );
-                                    } else {
-                                      Get.to(
-                                        () => VidioFormPage(meeting: meeting),
-                                      );
                                     }
                                   },
                                 ),
@@ -220,10 +216,6 @@ class CourseDetailPage extends StatelessWidget {
                                       Get.to(
                                         () =>
                                             DiskusiDetailGuru(diskusi: diskusi),
-                                      );
-                                    } else {
-                                      Get.to(
-                                        () => DiskusiFormPage(meeting: meeting),
                                       );
                                     }
                                   },
