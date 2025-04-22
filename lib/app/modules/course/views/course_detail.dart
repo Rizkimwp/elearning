@@ -1,8 +1,40 @@
+import 'package:elearning/app/data/diskusi/controller/diskusi_controller.dart';
+import 'package:elearning/app/data/meeting/meeting.dart';
+import 'package:elearning/app/data/module/controller/module_controller.dart';
+import 'package:elearning/app/data/quiz/controller/quiz_controller.dart';
+import 'package:elearning/app/data/videomaterial/controller/vidio_controller.dart';
+import 'package:elearning/app/modules/course/views/add_course.dart';
+import 'package:elearning/app/modules/course/views/add_diskusi_guru.dart';
+import 'package:elearning/app/modules/course/views/add_modul.dart';
+import 'package:elearning/app/modules/course/views/add_quiz.dart';
+import 'package:elearning/app/modules/course/views/add_vidio.dart';
+import 'package:elearning/app/modules/course/views/diskusi_detail_guru.dart';
+import 'package:elearning/app/modules/course/views/module_detail_guru.dart';
+import 'package:elearning/app/modules/course/views/quiz_answer.dart';
+import 'package:elearning/app/modules/course/views/quiz_detail_guru.dart';
+import 'package:elearning/app/modules/course/views/vidio_detail_guru.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CourseDetailPage extends StatelessWidget {
+  final Meeting meeting;
+
+  const CourseDetailPage({super.key, required this.meeting});
   @override
   Widget build(BuildContext context) {
+    final quizController = Get.put<QuizController>(QuizController());
+    final modulController = Get.put<ModuleController>(ModuleController());
+    final vidioController = Get.put<VidioController>(VidioController());
+    final diskusiController = Get.put<DiskusiController>(DiskusiController());
+    Future<void> refreshData() async {
+      // Simulasi proses data baru (misalnya dari API)
+      await Future.delayed(Duration(seconds: 2));
+      vidioController.fetchVidio();
+      quizController.getQuizzes();
+      modulController.fetchModule();
+      diskusiController.fetchDiskusi();
+    }
+
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -30,7 +62,7 @@ class CourseDetailPage extends StatelessWidget {
                     ),
 
                     child: Text(
-                      "Pertemuan 2",
+                      meeting.title,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -41,7 +73,7 @@ class CourseDetailPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Pengantar Algoritma",
+                    meeting.description,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -77,7 +109,7 @@ class CourseDetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Product Design',
+                          meeting.title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -102,35 +134,122 @@ class CourseDetailPage extends StatelessWidget {
 
                   // List Modul
                   Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.05,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            buildLessonItem("01", "Introduction", true),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("02", "Process overview", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("03", "User Flow", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("04", "Wireframe", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("05", "Final Review", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("05", "Final Review", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("05", "Final Review", false),
-                            SizedBox(height: screenHeight * 0.02),
-                            buildLessonItem("05", "Final Review", false),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                    child: Obx(() {
+                      final quiz = quizController.quiz.firstWhereOrNull(
+                        (q) => q.meeting?.id == meeting.id,
+                      );
+                      final modul = modulController.modul.firstWhereOrNull(
+                        (m) => m.meeting?.id == meeting.id,
+                      );
+                      final vidio = vidioController.vidio.firstWhereOrNull(
+                        (d) => d.meeting?.id == meeting.id,
+                      );
+                      final diskusi = diskusiController.diskusi
+                          .firstWhereOrNull((v) => v.meeting?.id == meeting.id);
+                      return RefreshIndicator(
+                        onRefresh: refreshData,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.06,
+                          ),
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Column(
+                              children: [
+                                // === Quiz ===
+                                buildLessonItem(
+                                  "01",
+                                  "Quiz",
+                                  quiz != null,
+                                  Icons.play_arrow,
+                                  () {
+                                    if (quiz != null) {
+                                      Get.to(() => QuizAnswerPage(quiz: quiz));
+                                    }
+                                  },
+                                ),
 
-                  // Tombol Join No
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Modul ===
+                                buildLessonItem(
+                                  "02",
+                                  "Modul",
+                                  modul != null,
+                                  Icons.play_arrow,
+                                  () {
+                                    if (modul != null) {
+                                      Get.to(
+                                        () => DetailModulPage(modul: modul),
+                                      );
+                                    }
+                                  },
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Modul Pembelajaran ===
+                                buildLessonItem(
+                                  "03",
+                                  "Vidio Pembelajaran",
+                                  vidio != null,
+                                  Icons.play_arrow,
+                                  () {
+                                    if (vidio != null) {
+                                      Get.to(
+                                        () => VideoDetailScreen(vidio: vidio),
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => VidioFormPage(meeting: meeting),
+                                      );
+                                    }
+                                  },
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Diskusi ===
+                                buildLessonItem(
+                                  "04",
+                                  "Forum Diskusi",
+                                  diskusi != null,
+                                  Icons.play_arrow,
+                                  () {
+                                    if (diskusi != null) {
+                                      Get.to(
+                                        () =>
+                                            DiskusiDetailGuru(diskusi: diskusi),
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => DiskusiFormPage(meeting: meeting),
+                                      );
+                                    }
+                                  },
+                                ),
+
+                                SizedBox(height: screenHeight * 0.02),
+
+                                // === Tugas ===
+                                buildLessonItem(
+                                  "05",
+                                  "Tugas",
+                                  false,
+                                  Icons.add,
+                                  () => _openBottomSheet(
+                                    context,
+
+                                    AddCourseForm(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
                 ],
               ),
             ),
@@ -140,7 +259,13 @@ class CourseDetailPage extends StatelessWidget {
     );
   }
 
-  Widget buildLessonItem(String number, String title, bool completed) {
+  Widget buildLessonItem(
+    String number,
+    String title,
+    bool completed,
+    IconData icons,
+    VoidCallback onTap,
+  ) {
     return Row(
       children: [
         Text(
@@ -188,11 +313,31 @@ class CourseDetailPage extends StatelessWidget {
             ],
           ),
         ),
-        CircleAvatar(
-          backgroundColor: Color(0xFF3C5EFF),
-          child: Icon(Icons.play_arrow, color: Colors.white),
+        SizedBox(width: 8),
+        ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF3C5EFF),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: Icon(icons, color: Colors.white),
         ),
       ],
     );
   }
+}
+
+void _openBottomSheet(BuildContext context, Widget child) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    builder: (context) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height / 1.8,
+        child: child,
+      );
+    },
+  );
 }

@@ -181,13 +181,13 @@ class HomeGuruView extends GetView<HomeController> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        // Tambahkan aksi yang diinginkan di sini
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CourseDetailPage(),
-                          ),
-                        );
+                        // // Tambahkan aksi yang diinginkan di sini
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CourseDetailPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         children: [

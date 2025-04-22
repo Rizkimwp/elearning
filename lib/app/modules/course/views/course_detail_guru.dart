@@ -1,11 +1,14 @@
+import 'package:elearning/app/data/diskusi/controller/diskusi_controller.dart';
 import 'package:elearning/app/data/meeting/meeting.dart';
 import 'package:elearning/app/data/module/controller/module_controller.dart';
 import 'package:elearning/app/data/quiz/controller/quiz_controller.dart';
 import 'package:elearning/app/data/videomaterial/controller/vidio_controller.dart';
 import 'package:elearning/app/modules/course/views/add_course.dart';
+import 'package:elearning/app/modules/course/views/add_diskusi_guru.dart';
 import 'package:elearning/app/modules/course/views/add_modul.dart';
 import 'package:elearning/app/modules/course/views/add_quiz.dart';
 import 'package:elearning/app/modules/course/views/add_vidio.dart';
+import 'package:elearning/app/modules/course/views/diskusi_detail_guru.dart';
 import 'package:elearning/app/modules/course/views/module_detail_guru.dart';
 import 'package:elearning/app/modules/course/views/quiz_detail_guru.dart';
 import 'package:elearning/app/modules/course/views/vidio_detail_guru.dart';
@@ -21,12 +24,14 @@ class CourseDetailGuruPage extends StatelessWidget {
     final quizController = Get.put<QuizController>(QuizController());
     final modulController = Get.put<ModuleController>(ModuleController());
     final vidioController = Get.put<VidioController>(VidioController());
+    final diskusiController = Get.put<DiskusiController>(DiskusiController());
     Future<void> refreshData() async {
       // Simulasi proses data baru (misalnya dari API)
       await Future.delayed(Duration(seconds: 2));
       vidioController.fetchVidio();
       quizController.getQuizzes();
       modulController.fetchModule();
+      diskusiController.fetchDiskusi();
     }
 
     final screenWidth = MediaQuery.of(context).size.width;
@@ -113,7 +118,7 @@ class CourseDetailGuruPage extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          '4 Sesi Materi',
+                          '5 Sesi Materi',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[700],
@@ -136,8 +141,10 @@ class CourseDetailGuruPage extends StatelessWidget {
                         (m) => m.meeting?.id == meeting.id,
                       );
                       final vidio = vidioController.vidio.firstWhereOrNull(
-                        (v) => v.meeting?.id == meeting.id,
+                        (d) => d.meeting?.id == meeting.id,
                       );
+                      final diskusi = diskusiController.diskusi
+                          .firstWhereOrNull((v) => v.meeting?.id == meeting.id);
                       return RefreshIndicator(
                         onRefresh: refreshData,
                         child: Padding(
@@ -218,13 +225,23 @@ class CourseDetailGuruPage extends StatelessWidget {
                                 // === Diskusi ===
                                 buildLessonItem(
                                   "04",
-                                  "Diskusi",
-                                  false,
-                                  Icons.add,
-                                  () => _openBottomSheet(
-                                    context,
-                                    AddCourseForm(),
-                                  ),
+                                  "Forum Diskusi",
+                                  diskusi != null,
+                                  diskusi != null
+                                      ? Icons.remove_red_eye
+                                      : Icons.add,
+                                  () {
+                                    if (diskusi != null) {
+                                      Get.to(
+                                        () =>
+                                            DiskusiDetailGuru(diskusi: diskusi),
+                                      );
+                                    } else {
+                                      Get.to(
+                                        () => DiskusiFormPage(meeting: meeting),
+                                      );
+                                    }
+                                  },
                                 ),
 
                                 SizedBox(height: screenHeight * 0.02),
@@ -237,6 +254,7 @@ class CourseDetailGuruPage extends StatelessWidget {
                                   Icons.add,
                                   () => _openBottomSheet(
                                     context,
+
                                     AddCourseForm(),
                                   ),
                                 ),

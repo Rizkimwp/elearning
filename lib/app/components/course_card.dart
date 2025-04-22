@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 class CourseCard extends StatelessWidget {
   final String title;
   final String author;
-  final int modules;
+  final int? modules;
+  final DateTime? createAt;
   final VoidCallback onTap;
 
   const CourseCard({
     required this.title,
     required this.author,
-    required this.modules,
+    this.modules,
     required this.onTap,
+    this.createAt,
     super.key,
   });
 
@@ -74,7 +76,11 @@ class CourseCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        "$modules Modules",
+                        modules != null
+                            ? "$modules Modules"
+                            : createAt != null
+                            ? DateFormat('dd MMM yyyy').format(createAt!)
+                            : "No Info",
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey.shade700,
